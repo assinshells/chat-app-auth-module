@@ -1,0 +1,73 @@
+import { useState } from "react";
+import { useLoginStore } from "@features/auth/login/model/useLoginStore.js";
+
+/**
+ * LoginForm — тупой компонент.
+ * onSuccess(login) — вызывается с логином после успешного входа.
+ */
+export function LoginForm({ onSuccess, onRegister, onForgot }) {
+  const [login, setLogin] = useState("");
+  const [password, setPassword] = useState("");
+  const { loading, error, login: doLogin, clearError } = useLoginStore();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    clearError();
+    doLogin({ login, password }, () => onSuccess(login));
+  };
+
+  return (
+    <>
+      {error && <p className="text-danger text-center mb-3">{error}</p>}
+      <form onSubmit={handleSubmit}>
+        <div className="form-floating mb-3">
+          <input
+            id="floatingLoginInput"
+            type="text"
+            className="form-control"
+            placeholder=" "
+            value={login}
+            onChange={(e) => setLogin(e.target.value)}
+            required
+          />
+          <label htmlFor="floatingLoginInput">Login</label>
+        </div>
+
+        <div className="form-floating mb-4">
+          <input
+            id="floatingPasswordInput"
+            type="password"
+            className="form-control"
+            placeholder=" "
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <label htmlFor="floatingPasswordInput">Password</label>
+        </div>
+        <button
+          type="submit"
+          disabled={loading}
+          className="btn btn-primary w-100 text-decoration-none rounded-4 py-3 fw-bold text-uppercase m-0"
+        >
+          {loading ? "Signing in..." : "Sign In"}
+        </button>
+      </form>
+      <button
+        type="button"
+        onClick={onForgot}
+        className="btn btn-link w-100 text-break fw-medium mt-3"
+      >
+        Forgot Password
+      </button>
+
+      <button
+        type="button"
+        onClick={onRegister}
+        className="btn btn-link w-100 text-break fw-medium mt-4"
+      >
+        Registration
+      </button>
+    </>
+  );
+}
