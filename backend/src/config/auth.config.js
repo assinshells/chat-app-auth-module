@@ -7,8 +7,16 @@ import { env } from "./env.js";
  * two configs can silently drift out of sync (this used to happen).
  */
 export const authConfig = {
-  session: {
-    ttlSeconds: env.sessionTtlSeconds,
+  jwt: {
+    accessToken: {
+      secret: env.jwt.accessSecret,
+      expiresIn: env.jwt.accessExpiresIn,
+    },
+    refreshToken: {
+      secret: env.jwt.refreshSecret,
+      expiresIn: env.jwt.refreshExpiresIn,
+      ttlSeconds: env.jwt.refreshTtlSeconds,
+    },
   },
   otp: {
     ttlSeconds: env.otpTtlSeconds,
@@ -21,5 +29,6 @@ export const authConfig = {
     forgotPassword: { max: env.rateLimit.forgotMax },
     verifyOtp: { max: env.rateLimit.otpMax },
     resetPassword: { max: env.rateLimit.resetMax },
+    refresh: { max: env.rateLimit.refreshMax },
   },
 };

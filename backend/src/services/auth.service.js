@@ -1,5 +1,5 @@
 import { UserRepository } from "../repositories/user.repository.js";
-import { SessionService } from "./session.service.js";
+import { TokenService } from "./token.service.js";
 import { OtpService } from "./otp.service.js";
 import { PasswordProvider } from "../providers/password.provider.js";
 import { EmailAdapter } from "../adapters/email.adapter.js";
@@ -19,8 +19,7 @@ export const AuthService = {
     const valid = await PasswordProvider.verify(password, user.password_hash);
     if (!valid) throw new AuthenticationException();
 
-    const sessionId = await SessionService.createSession(user.id);
-    return { sessionId };
+    return TokenService.issueTokenPair(user.id);
   },
 
   async register({ login, password, email }) {
@@ -70,8 +69,12 @@ export const AuthService = {
     return { success: true };
   },
 
-  async logout({ sessionId }) {
-    await SessionService.invalidateSession(sessionId);
+  async refreshTokens({ refreshToken }) {
+    return TokenService.rotateRefreshToken(refreshToken);
+  },
+
+  async logout({ refreshToken }) {
+    await TokenService.revokeRefreshToken(refreshToken);
     return { success: true };
   },
 };

@@ -5,6 +5,7 @@ import {
   toForgotPasswordDto,
   toVerifyOtpDto,
   toResetPasswordDto,
+  toRefreshTokenDto,
 } from "../dto/auth.dto.js";
 import {
   validateLoginRequest,
@@ -12,6 +13,7 @@ import {
   validateForgotPasswordRequest,
   validateVerifyOtpRequest,
   validateResetPasswordRequest,
+  validateRefreshRequest,
 } from "../validators/auth.validator.js";
 import { HTTP_STATUS } from "../constants/auth.constants.js";
 
@@ -76,9 +78,22 @@ export const AuthController = {
     }
   },
 
+  refresh: async (req, res, next) => {
+    try {
+      validateRefreshRequest(req.body);
+      const dto = toRefreshTokenDto(req.body);
+      const result = await AuthService.refreshTokens(dto);
+      res.status(HTTP_STATUS.OK).json({ success: true, ...result });
+    } catch (err) {
+      next(err);
+    }
+  },
+
   logout: async (req, res, next) => {
     try {
-      const result = await AuthService.logout({ sessionId: req.sessionId });
+      const result = await AuthService.logout({
+        refreshToken: req.body.refreshToken,
+      });
       res.status(HTTP_STATUS.OK).json({ success: true, ...result });
     } catch (err) {
       next(err);

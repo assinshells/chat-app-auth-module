@@ -1,6 +1,5 @@
 import { OtpRepository } from "../repositories/otp.repository.js";
 import { OtpProvider } from "../providers/otp.provider.js";
-import { SessionProvider } from "../providers/session.provider.js";
 import {
   OtpExpiredException,
   OtpInvalidException,
@@ -25,7 +24,7 @@ export const OtpService = {
   },
 
   async createVerifiedToken(userId) {
-    const token = SessionProvider.generateSessionId();
+    const token = OtpProvider.generateVerifiedToken();
     await OtpRepository.saveVerifiedToken(token, userId);
     return token;
   },

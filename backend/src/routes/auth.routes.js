@@ -22,6 +22,7 @@ router.post(
   RateLimitProvider.resetPassword,
   AuthController.resetPassword,
 );
+router.post("/refresh", RateLimitProvider.refresh, AuthController.refresh);
 router.post("/logout", authGuard, AuthController.logout);
 
 export default router;

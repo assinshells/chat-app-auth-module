@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { AUTH_SCREENS, SESSION_KEY } from "@shared/constants/auth.constants.js";
+import { AUTH_SCREENS } from "@shared/constants/auth.constants.js";
 import { Storage } from "@shared/lib/storage.js";
+import { TokenStorage } from "@shared/lib/tokenStorage.js";
 
 import { LoginPage } from "@pages/LoginPage.jsx";
 import { RegisterPage } from "@pages/RegisterPage.jsx";
@@ -14,7 +15,7 @@ import "@app/styles/index.css";
 const USER_KEY = "userLogin";
 
 const getInitialScreen = () =>
-  Storage.get(SESSION_KEY) ? AUTH_SCREENS.APP : AUTH_SCREENS.LOGIN;
+  TokenStorage.hasSession() ? AUTH_SCREENS.APP : AUTH_SCREENS.LOGIN;
 
 export default function App() {
   const [screen, setScreen] = useState(getInitialScreen);

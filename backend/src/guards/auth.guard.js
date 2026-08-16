@@ -1,20 +1,23 @@
-import { SessionService } from "../services/session.service.js";
-import { SessionExpiredException } from "../exceptions/auth.exceptions.js";
+import { TokenProvider } from "../providers/token.provider.js";
+import { AccessTokenInvalidException } from "../exceptions/auth.exceptions.js";
 
 /**
  * authGuard — Express middleware.
- * Проверяет сессию и пробрасывает userId в req.
+ * Ожидает заголовок `Authorization: Bearer <accessToken>`, проверяет
+ * подпись/срок действия JWT (без обращения к БД/Redis — access-токен
+ * полностью stateless) и пробрасывает userId в req.
  */
-export const authGuard = async (req, _res, next) => {
-  const sessionId = req.headers["x-session-id"];
-  if (!sessionId) return next(new SessionExpiredException());
+export const authGuard = (req, _res, next) => {
+  const header = req.headers.authorization;
+  const token = header?.startsWith("Bearer ") ? header.slice(7) : null;
+
+  if (!token) return next(new AccessTokenInvalidException());
 
   try {
-    const userId = await SessionService.validateSession(sessionId);
-    req.userId = userId;
-    req.sessionId = sessionId;
+    const payload = TokenProvider.verifyAccessToken(token);
+    req.userId = payload.sub;
     next();
-  } catch (err) {
-    next(err);
+  } catch {
+    next(new AccessTokenInvalidException());
   }
 };

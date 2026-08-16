@@ -7,4 +7,5 @@ export const AUTH_SCREENS = Object.freeze({
   APP: "app",
 });
 
-export const SESSION_KEY = "sessionId";
+export const ACCESS_TOKEN_KEY = "accessToken";
+export const REFRESH_TOKEN_KEY = "refreshToken";

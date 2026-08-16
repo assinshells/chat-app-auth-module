@@ -11,6 +11,8 @@ const REQUIRED_VARS = [
   "DATABASE_URL",
   "REDIS_URL",
   "NODE_ENV",
+  "JWT_ACCESS_SECRET",
+  "JWT_REFRESH_SECRET",
 ];
 
 function getEnv(name, fallback) {
@@ -35,7 +37,16 @@ export const env = {
   clientUrl: getEnv("CLIENT_URL"),
   databaseUrl: getEnv("DATABASE_URL"),
   redisUrl: getEnv("REDIS_URL"),
-  sessionTtlSeconds: Number(getEnv("SESSION_TTL_SECONDS", 604800)),
+  jwt: {
+    accessSecret: getEnv("JWT_ACCESS_SECRET"),
+    refreshSecret: getEnv("JWT_REFRESH_SECRET"),
+    accessExpiresIn: getEnv("JWT_ACCESS_EXPIRES_IN", "15m"),
+    refreshExpiresIn: getEnv("JWT_REFRESH_EXPIRES_IN", "7d"),
+    // Must stay in sync with refreshExpiresIn above — used as the Redis
+    // whitelist TTL (seconds) for the refresh token, since jsonwebtoken's
+    // `expiresIn` accepts human strings ("7d") that Redis EX cannot.
+    refreshTtlSeconds: Number(getEnv("JWT_REFRESH_TTL_SECONDS", 604800)),
+  },
   otpTtlSeconds: Number(getEnv("OTP_TTL_SECONDS", 600)),
   otpLength: Number(getEnv("OTP_LENGTH", 6)),
   rateLimit: {
@@ -44,6 +55,7 @@ export const env = {
     forgotMax: Number(getEnv("RATE_LIMIT_FORGOT_MAX", 5)),
     otpMax: Number(getEnv("RATE_LIMIT_OTP_MAX", 10)),
     resetMax: Number(getEnv("RATE_LIMIT_RESET_MAX", 5)),
+    refreshMax: Number(getEnv("RATE_LIMIT_REFRESH_MAX", 30)),
     windowMs: Number(getEnv("RATE_LIMIT_WINDOW_MS", 900000)),
   },
 };

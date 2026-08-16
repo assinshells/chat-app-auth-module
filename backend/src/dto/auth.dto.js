@@ -36,9 +36,15 @@
  */
 
 /**
+ * @typedef {Object} RefreshTokenDto
+ * @property {string} refreshToken
+ */
+
+/**
  * @typedef {Object} AuthResponseDto
  * @property {boolean} success
- * @property {string|undefined} sessionId
+ * @property {string|undefined} accessToken
+ * @property {string|undefined} refreshToken
  * @property {string|undefined} verifiedToken
  */
 
@@ -72,4 +78,8 @@ export const toResetPasswordDto = (body) => ({
   verifiedToken: body.verifiedToken,
   password: body.password,
   confirmPassword: body.confirmPassword,
+});
+
+export const toRefreshTokenDto = (body) => ({
+  refreshToken: body.refreshToken,
 });

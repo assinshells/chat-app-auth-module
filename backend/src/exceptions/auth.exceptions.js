@@ -38,9 +38,15 @@ export class RateLimitException extends BaseException {
   }
 }
 
-export class SessionExpiredException extends BaseException {
-  constructor(message = AUTH_ERRORS.SESSION_INVALID) {
-    super(message, HTTP_STATUS.UNAUTHORIZED, "SESSION_EXPIRED");
+export class AccessTokenInvalidException extends BaseException {
+  constructor(message = AUTH_ERRORS.ACCESS_TOKEN_INVALID) {
+    super(message, HTTP_STATUS.UNAUTHORIZED, "ACCESS_TOKEN_INVALID");
+  }
+}
+
+export class RefreshTokenInvalidException extends BaseException {
+  constructor(message = AUTH_ERRORS.REFRESH_TOKEN_INVALID) {
+    super(message, HTTP_STATUS.UNAUTHORIZED, "REFRESH_TOKEN_INVALID");
   }
 }
 
