@@ -15,22 +15,21 @@ export function ForgotPasswordForm({ onSuccess, onBack }) {
     <>
       {error && <p className="text-danger text-center mb-3">{error}</p>}
       <form onSubmit={handleSubmit}>
-        <div className="form-floating mb-3">
+        <div className="mb-3">
           <input
-            id="floatingEmailInput"
+            id="emailInput"
             type="email"
             className="form-control"
-            placeholder=" "
+            placeholder="Введіть пошту"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          <label htmlFor="floatingEmailInput">Введіть пошту</label>
         </div>
         <button
           type="submit"
           disabled={loading}
-          className="btn btn-primary w-100 text-decoration-none rounded-4 py-3 fw-bold text-uppercase m-0"
+          className="btn btn-primary w-100 text-decoration-none rounded-4 fw-bold m-0"
         >
           {loading ? "Відправляємо..." : "Відправити код"}
         </button>
@@ -39,7 +38,7 @@ export function ForgotPasswordForm({ onSuccess, onBack }) {
         <button
           type="button"
           onClick={onBack}
-          className="btn btn-outline-primary w-100 text-break rounded-4 py-3 fw-bold text-uppercase mt-4"
+          className="btn btn-outline-primary w-100 text-break rounded-4 fw-bold mt-4"
         >
           Увійти
         </button>

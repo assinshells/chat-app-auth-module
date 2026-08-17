@@ -123,7 +123,7 @@ export function OtpForm({ email, onSuccess, onBack }) {
         <button
           type="submit"
           disabled={loading || !isComplete}
-          className="btn btn-primary w-100 text-decoration-none rounded-4 py-3 fw-bold text-uppercase m-0"
+          className="btn btn-primary w-100 text-decoration-none rounded-4 fw-bold m-0"
         >
           {loading ? "Верифікація..." : "Верифікувати"}
         </button>
@@ -133,7 +133,7 @@ export function OtpForm({ email, onSuccess, onBack }) {
         <button
           type="button"
           onClick={onBack}
-          className="btn btn-outline-primary w-100 text-break rounded-4 py-3 fw-bold text-uppercase mt-4"
+          className="btn btn-outline-primary w-100 text-break rounded-4 fw-bold mt-4"
         >
           Увійти
         </button>

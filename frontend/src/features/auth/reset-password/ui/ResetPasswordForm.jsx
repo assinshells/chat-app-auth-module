@@ -16,34 +16,32 @@ export function ResetPasswordForm({ verifiedToken, onSuccess, onBack }) {
     <>
       {error && <p className="text-danger text-center mb-3">{error}</p>}
       <form onSubmit={handleSubmit}>
-        <div className="form-floating mb-3">
+        <div className="mb-3">
           <input
-            id="floatingPasswordInput"
+            id="passwordInput"
             type="password"
             className="form-control"
-            placeholder=" "
+            placeholder="Введіть новий пароль"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <label htmlFor="floatingPasswordInput">Введіть новий пароль</label>
         </div>
-        <div className="form-floating mb-3">
+        <div className="mb-3">
           <input
-            id="floatingConfirmPasswordInput"
+            id="confirmPasswordInput"
             type="password"
             className="form-control"
-            placeholder=" "
+            placeholder="Повторити пароль"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
-          <label htmlFor="floatingConfirmPasswordInput">Повторити пароль</label>
         </div>
         <button
           type="submit"
           disabled={loading}
-          className="btn btn-primary w-100 text-decoration-none rounded-4 py-3 fw-bold text-uppercase m-0"
+          className="btn btn-primary w-100 text-decoration-none rounded-4 fw-bold m-0"
         >
           {loading ? "Зберігаємо..." : "Зберегти"}
         </button>
@@ -52,7 +50,7 @@ export function ResetPasswordForm({ verifiedToken, onSuccess, onBack }) {
         <button
           type="button"
           onClick={onBack}
-          className="btn btn-outline-primary w-100 text-break rounded-4 py-3 fw-bold text-uppercase mt-4"
+          className="btn btn-outline-primary w-100 text-break rounded-4 fw-bold mt-4"
         >
           Увійти
         </button>

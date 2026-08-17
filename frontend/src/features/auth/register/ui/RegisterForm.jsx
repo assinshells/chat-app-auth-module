@@ -19,40 +19,37 @@ export function RegisterForm({ onSuccess, onBack }) {
     <>
       {error && <p className="text-danger text-center mb-3">{error}</p>}
       <form onSubmit={handleSubmit}>
-        <div className="form-floating mb-3">
+        <div className="mb-3">
           <input
-            id="floatingLoginInput"
+            id="loginInput"
             type="text"
             className="form-control"
-            placeholder=" "
+            placeholder="Введіть нікнейм"
             value={login}
             onChange={(e) => setLogin(e.target.value)}
             required
           />
-          <label htmlFor="floatingLoginInput">Введіть нікнейм</label>
         </div>
-        <div className="form-floating mb-3">
+        <div className="mb-3">
           <input
-            id="floatingPasswordInput"
+            id="passwordInput"
             type="password"
             className="form-control"
-            placeholder=" "
+            placeholder="Введіть пароль"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <label htmlFor="floatingPasswordInput">Введіть пароль</label>
         </div>
-        <div className="form-floating mb-3">
+        <div className="mb-3">
           <input
-            id="floatingEmailInput"
+            id="emailInput"
             type="email"
             className="form-control"
-            placeholder=" "
+            placeholder="Введіть пошту (опціонально)"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          <label htmlFor="floatingEmailInput">Введіть пошту (опціонально)</label>
         </div>
         <label className="mb-2 text-muted small">Як ви себе ідентифікуєте?</label>
         <div className="d-flex align-items-center mb-3 px-0">
@@ -77,7 +74,7 @@ export function RegisterForm({ onSuccess, onBack }) {
         <button
           type="submit"
           disabled={loading}
-          className="btn btn-primary w-100 text-decoration-none rounded-4 py-3 fw-bold text-uppercase m-0"
+          className="btn btn-primary w-100 text-decoration-none rounded-4 fw-bold m-0"
         >
           {loading ? "Реєструємо..." : "Зареєструватися"}
         </button>
@@ -86,7 +83,7 @@ export function RegisterForm({ onSuccess, onBack }) {
         <button
           type="button"
           onClick={onBack}
-          className="btn btn-outline-primary w-100 text-break rounded-4 py-3 fw-bold text-uppercase mt-4"
+          className="btn btn-outline-primary w-100 text-break rounded-4 fw-bold mt-4"
         >
           Увійти
         </button>
