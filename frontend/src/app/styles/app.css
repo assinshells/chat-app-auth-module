@@ -17,3 +17,18 @@ body {
   height: 100%;
 }
 
+/*******************/
+.btn-outline-primary {
+  border-color: transparent;
+  color: var(--bs-primary);
+}
+.btn-outline-primary:hover {
+  border-color: transparent;
+  color: var(--bs-primary);
+  background-color: rgba(var(--bs-primary-rgb), 0.08);
+}
+.btn-outline-primary:focus,
+.btn-outline-primary:active {
+  border-color: transparent !important;
+  box-shadow: none;
+}

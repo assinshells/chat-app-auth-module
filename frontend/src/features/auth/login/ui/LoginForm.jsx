@@ -56,7 +56,7 @@ export function LoginForm({ onSuccess, onRegister, onForgot }) {
       <button
         type="button"
         onClick={onForgot}
-        className="btn btn-link w-100 text-break fw-medium mt-3"
+        className="btn btn-outline-primary w-100 text-break rounded-4 py-3 fw-bold text-uppercase mt-3"
       >
         Забули пароль?
       </button>
@@ -64,7 +64,7 @@ export function LoginForm({ onSuccess, onRegister, onForgot }) {
       <button
         type="button"
         onClick={onRegister}
-        className="btn btn-link w-100 text-break fw-medium mt-4"
+        className="btn btn-outline-primary w-100 text-break rounded-4 py-3 fw-bold text-uppercase mt-4"
       >
         Зареєструватися
       </button>

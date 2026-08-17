@@ -39,7 +39,7 @@ export function ForgotPasswordForm({ onSuccess, onBack }) {
         <button
           type="button"
           onClick={onBack}
-          className="btn btn-link w-100 text-break fw-medium mt-4"
+          className="btn btn-outline-primary w-100 text-break rounded-4 py-3 fw-bold text-uppercase mt-4"
         >
           Увійти
         </button>
