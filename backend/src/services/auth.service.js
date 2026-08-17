@@ -22,7 +22,7 @@ export const AuthService = {
     return TokenService.issueTokenPair(user.id);
   },
 
-  async register({ login, password, email }) {
+  async register({ login, password, email, gender }) {
     const existingLogin = await UserRepository.findByLogin(login);
     if (existingLogin) throw new ConflictException(AUTH_ERRORS.LOGIN_TAKEN);
 
@@ -32,7 +32,12 @@ export const AuthService = {
     }
 
     const passwordHash = await PasswordProvider.hash(password);
-    const created = await UserRepository.create({ login, passwordHash, email });
+    const created = await UserRepository.create({
+      login,
+      passwordHash,
+      email,
+      gender,
+    });
 
     if (!created) throw new ConflictException(AUTH_ERRORS.LOGIN_TAKEN);
 

@@ -125,7 +125,7 @@ export function OtpForm({ email, onSuccess, onBack }) {
           disabled={loading || !isComplete}
           className="btn btn-primary w-100 text-decoration-none rounded-4 py-3 fw-bold text-uppercase m-0"
         >
-          {loading ? "Verifying..." : "Verify"}
+          {loading ? "Верифікація..." : "Верифікувати"}
         </button>
       </form>
 
@@ -135,7 +135,7 @@ export function OtpForm({ email, onSuccess, onBack }) {
           onClick={onBack}
           className="btn btn-link w-100 text-break fw-medium mt-4"
         >
-          Back to Login
+          Увійти
         </button>
       </p>
     </>

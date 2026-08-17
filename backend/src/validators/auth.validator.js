@@ -1,9 +1,12 @@
 import { ValidationException } from "../exceptions/auth.exceptions.js";
+import { GENDER_OPTIONS } from "../constants/auth.constants.js";
 
 const isNonEmptyString = (val) =>
   typeof val === "string" && val.trim().length > 0;
 const isValidEmail = (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
 const isValidPassword = (val) => typeof val === "string" && val.length >= 6;
+const isValidGender = (val) =>
+  typeof val === "string" && GENDER_OPTIONS.includes(val);
 
 export const validateLoginRequest = (body) => {
   const errors = [];
@@ -19,6 +22,8 @@ export const validateRegisterRequest = (body) => {
   if (!isValidPassword(body.password))
     errors.push("password must be at least 6 characters");
   if (body.email && !isValidEmail(body.email)) errors.push("email is invalid");
+  if (!isValidGender(body.gender))
+    errors.push(`gender is required and must be one of: ${GENDER_OPTIONS.join(", ")}`);
   if (errors.length) throw new ValidationException("Validation failed", errors);
 };
 

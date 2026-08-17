@@ -22,9 +22,7 @@ export function AuthLayout({ title, subtitle, children }) {
                         )}
 
                         <h4 className="mb-0">
-                          <span className="text-muted text-break">
-                            {title}
-                          </span>
+                          <span className="text-muted text-break">{title}</span>
                         </h4>
                       </header>
                     </div>

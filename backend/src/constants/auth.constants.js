@@ -14,10 +14,17 @@ export const AUTH_ERRORS = Object.freeze({
   VALIDATION_FAILED: "Validation failed",
 });
 
+// Gender is a required registration field with no default value —
+// the client must always send one of these explicit values.
+export const GENDER_VALUES = Object.freeze({
+  MALE: "male",
+  FEMALE: "female",
+  UNKNOWN: "unknown",
+});
+
+export const GENDER_OPTIONS = Object.freeze(Object.values(GENDER_VALUES));
+
 export const REDIS_KEYS = Object.freeze({
-  // Refresh-token whitelist, keyed by the token's own `jti` claim (not the
-  // token itself) so a stolen access token can't be used to enumerate or
-  // revoke a user's refresh tokens.
   refreshToken: (jti) => `refresh_token:${jti}`,
   otp: (uid) => `otp:${uid}`,
   otpVerified: (tok) => `otp_verified:${tok}`,

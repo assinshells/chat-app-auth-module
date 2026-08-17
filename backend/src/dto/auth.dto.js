@@ -15,6 +15,7 @@
  * @property {string} login
  * @property {string} password
  * @property {string|undefined} email
+ * @property {"male"|"female"|"unknown"} gender
  */
 
 /**
@@ -63,6 +64,7 @@ export const toRegisterRequestDto = (body) => ({
   login: body.login,
   password: body.password,
   email: body.email || undefined,
+  gender: body.gender,
 });
 
 export const toForgotPasswordDto = (body) => ({

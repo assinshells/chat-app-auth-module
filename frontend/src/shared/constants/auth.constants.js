@@ -9,3 +9,10 @@ export const AUTH_SCREENS = Object.freeze({
 
 export const ACCESS_TOKEN_KEY = "accessToken";
 export const REFRESH_TOKEN_KEY = "refreshToken";
+
+// Обязательное поле при регистрации — значения совпадают с backend GENDER_VALUES.
+export const GENDER_OPTIONS = Object.freeze([
+  { value: "male", label: "Чоловік" },
+  { value: "female", label: "Жінка" },
+  { value: "unknown", label: "Не вказувати" },
+]);

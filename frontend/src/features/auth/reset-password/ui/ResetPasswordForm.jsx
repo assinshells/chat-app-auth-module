@@ -26,7 +26,7 @@ export function ResetPasswordForm({ verifiedToken, onSuccess, onBack }) {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <label htmlFor="floatingPasswordInput">New Password</label>
+          <label htmlFor="floatingPasswordInput">Введіть новий пароль</label>
         </div>
         <div className="form-floating mb-3">
           <input
@@ -38,14 +38,14 @@ export function ResetPasswordForm({ verifiedToken, onSuccess, onBack }) {
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
-          <label htmlFor="floatingConfirmPasswordInput">Confirm Password</label>
+          <label htmlFor="floatingConfirmPasswordInput">Повторити пароль</label>
         </div>
         <button
           type="submit"
           disabled={loading}
           className="btn btn-primary w-100 text-decoration-none rounded-4 py-3 fw-bold text-uppercase m-0"
         >
-          {loading ? "Saving..." : "Save Password"}
+          {loading ? "Зберігаємо..." : "Зберегти"}
         </button>
       </form>
       <p>
@@ -54,7 +54,7 @@ export function ResetPasswordForm({ verifiedToken, onSuccess, onBack }) {
           onClick={onBack}
           className="btn btn-link w-100 text-break fw-medium mt-4"
         >
-          Back to Login
+          Увійти
         </button>
       </p>
     </>

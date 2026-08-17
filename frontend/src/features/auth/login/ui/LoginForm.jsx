@@ -30,7 +30,7 @@ export function LoginForm({ onSuccess, onRegister, onForgot }) {
             onChange={(e) => setLogin(e.target.value)}
             required
           />
-          <label htmlFor="floatingLoginInput">Login</label>
+          <label htmlFor="floatingLoginInput">Введіть нікнейм</label>
         </div>
 
         <div className="form-floating mb-4">
@@ -43,14 +43,14 @@ export function LoginForm({ onSuccess, onRegister, onForgot }) {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <label htmlFor="floatingPasswordInput">Password</label>
+          <label htmlFor="floatingPasswordInput">Введіть пароль</label>
         </div>
         <button
           type="submit"
           disabled={loading}
           className="btn btn-primary w-100 text-decoration-none rounded-4 py-3 fw-bold text-uppercase m-0"
         >
-          {loading ? "Signing in..." : "Sign In"}
+          {loading ? "Заходимо..." : "Увійти"}
         </button>
       </form>
       <button
@@ -58,7 +58,7 @@ export function LoginForm({ onSuccess, onRegister, onForgot }) {
         onClick={onForgot}
         className="btn btn-link w-100 text-break fw-medium mt-3"
       >
-        Forgot Password
+        Забули пароль?
       </button>
 
       <button
@@ -66,7 +66,7 @@ export function LoginForm({ onSuccess, onRegister, onForgot }) {
         onClick={onRegister}
         className="btn btn-link w-100 text-break fw-medium mt-4"
       >
-        Registration
+        Зареєструватися
       </button>
     </>
   );

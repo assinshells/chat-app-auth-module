@@ -3,7 +3,7 @@ import { pool } from "../config/database.js";
 export const UserRepository = {
   async findByLogin(login) {
     const { rows } = await pool.query(
-      "SELECT id, login, email, password_hash FROM users WHERE login = $1",
+      "SELECT id, login, email, password_hash, gender FROM users WHERE login = $1",
       [login],
     );
     return rows[0] ?? null;
@@ -11,7 +11,7 @@ export const UserRepository = {
 
   async findByEmail(email) {
     const { rows } = await pool.query(
-      "SELECT id, login, email, password_hash FROM users WHERE email = $1",
+      "SELECT id, login, email, password_hash, gender FROM users WHERE email = $1",
       [email],
     );
     return rows[0] ?? null;
@@ -19,13 +19,13 @@ export const UserRepository = {
 
   async findById(id) {
     const { rows } = await pool.query(
-      "SELECT id, login, email, password_hash FROM users WHERE id = $1",
+      "SELECT id, login, email, password_hash, gender FROM users WHERE id = $1",
       [id],
     );
     return rows[0] ?? null;
   },
 
-  async create({ login, passwordHash, email }) {
+  async create({ login, passwordHash, email, gender }) {
     const client = await pool.connect();
     try {
       await client.query("BEGIN");
@@ -51,8 +51,8 @@ export const UserRepository = {
       }
 
       const { rows } = await client.query(
-        "INSERT INTO users (login, password_hash, email) VALUES ($1, $2, $3) RETURNING id",
-        [login, passwordHash, email ?? null],
+        "INSERT INTO users (login, password_hash, email, gender) VALUES ($1, $2, $3, $4) RETURNING id",
+        [login, passwordHash, email ?? null, gender],
       );
 
       await client.query("COMMIT");

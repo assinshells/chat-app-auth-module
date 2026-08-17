@@ -1,16 +1,18 @@
 import { useState } from "react";
 import { useRegisterStore } from "@features/auth/register/model/useRegisterStore.js";
+import { GENDER_OPTIONS } from "@shared/constants/auth.constants.js";
 
 export function RegisterForm({ onSuccess, onBack }) {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [gender, setGender] = useState("");
   const { loading, error, register, clearError } = useRegisterStore();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     clearError();
-    register({ login, password, email }, onSuccess);
+    register({ login, password, email, gender }, onSuccess);
   };
 
   return (
@@ -27,7 +29,7 @@ export function RegisterForm({ onSuccess, onBack }) {
             onChange={(e) => setLogin(e.target.value)}
             required
           />
-          <label htmlFor="floatingLoginInput">Login</label>
+          <label htmlFor="floatingLoginInput">Введіть нікнейм</label>
         </div>
         <div className="form-floating mb-3">
           <input
@@ -39,7 +41,7 @@ export function RegisterForm({ onSuccess, onBack }) {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <label htmlFor="floatingPasswordInput">Password</label>
+          <label htmlFor="floatingPasswordInput">Введіть пароль</label>
         </div>
         <div className="form-floating mb-3">
           <input
@@ -50,35 +52,34 @@ export function RegisterForm({ onSuccess, onBack }) {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          <label htmlFor="floatingEmailInput">Email (optional)</label>
+          <label htmlFor="floatingEmailInput">Введіть пошту (опціонально)</label>
         </div>
-        <label className="mb-2 text-muted small">GENDER</label>
+        <label className="mb-2 text-muted small">Як ви себе ідентифікуєте?</label>
         <div className="d-flex align-items-center mb-3 px-0">
-          <div className="form-check">
-            <input className="form-check-input" type="radio" name="flexRadioDefault" id="male" />
-            <label className="form-check-label" htmlFor="male">
-              Male
-            </label>
-          </div>
-          <div className="form-check mx-3">
-            <input className="form-check-input" type="radio" name="flexRadioDefault" id="female" />
-            <label className="form-check-label" htmlFor="female">
-              Female
-            </label>
-          </div>
-          <div className="form-check">
-            <input className="form-check-input" type="radio" name="flexRadioDefault" id="not" defaultChecked />
-            <label className="form-check-label" htmlFor="not">
-              Prefer not to say
-            </label>
-          </div>
+          {GENDER_OPTIONS.map((option) => (
+            <div className="form-check me-3" key={option.value}>
+              <input
+                className="form-check-input"
+                type="radio"
+                name="gender"
+                id={`gender-${option.value}`}
+                value={option.value}
+                checked={gender === option.value}
+                onChange={(e) => setGender(e.target.value)}
+                required
+              />
+              <label className="form-check-label" htmlFor={`gender-${option.value}`}>
+                {option.label}
+              </label>
+            </div>
+          ))}
         </div>
         <button
           type="submit"
           disabled={loading}
           className="btn btn-primary w-100 text-decoration-none rounded-4 py-3 fw-bold text-uppercase m-0"
         >
-          {loading ? "Registering..." : "Register"}
+          {loading ? "Реєструємо..." : "Зареєструватися"}
         </button>
       </form>
       <p>
@@ -87,7 +88,7 @@ export function RegisterForm({ onSuccess, onBack }) {
           onClick={onBack}
           className="btn btn-link w-100 text-break fw-medium mt-4"
         >
-          Back to Login
+          Увійти
         </button>
       </p>
     </>
