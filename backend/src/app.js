@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import compression from "compression";
+import cookieParser from "cookie-parser";
 import logger from "./config/logger.js";
 import authRoutes from "./routes/auth.routes.js";
 import { notFoundHandler } from "./middlewares/notFound.middleware.js";
@@ -25,6 +26,7 @@ app.use(
 app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.get("/health", (_req, res) => {
   res.status(200).json({ success: true, status: "ok" });

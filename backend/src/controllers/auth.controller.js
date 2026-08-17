@@ -5,7 +5,6 @@ import {
   toForgotPasswordDto,
   toVerifyOtpDto,
   toResetPasswordDto,
-  toRefreshTokenDto,
 } from "../dto/auth.dto.js";
 import {
   validateLoginRequest,
@@ -13,22 +12,29 @@ import {
   validateForgotPasswordRequest,
   validateVerifyOtpRequest,
   validateResetPasswordRequest,
-  validateRefreshRequest,
 } from "../validators/auth.validator.js";
-import { HTTP_STATUS } from "../constants/auth.constants.js";
+import { CookieProvider } from "../providers/cookie.provider.js";
+import { HTTP_STATUS, COOKIE_NAMES } from "../constants/auth.constants.js";
 
 /**
  * AuthController — только routing-логика:
  * получить запрос → вызвать сервис → вернуть ответ.
  * Никакой бизнес-логики. Все ошибки передаются в next(err).
+ *
+ * login/refresh выставляют refreshToken как httpOnly cookie и csrfToken
+ * как читаемую cookie (CookieProvider); в JSON-теле наружу уходит только
+ * accessToken (+ csrfToken, для удобства клиента — то же значение, что и
+ * в cookie). refreshToken в теле ответа никогда не возвращается.
  */
 export const AuthController = {
   login: async (req, res, next) => {
     try {
       validateLoginRequest(req.body);
       const dto = toLoginRequestDto(req.body);
-      const result = await AuthService.login(dto);
-      res.status(HTTP_STATUS.OK).json({ success: true, ...result });
+      const { accessToken, refreshToken, csrfToken } =
+        await AuthService.login(dto);
+      CookieProvider.setAuthCookies(res, { refreshToken, csrfToken });
+      res.status(HTTP_STATUS.OK).json({ success: true, accessToken, csrfToken });
     } catch (err) {
       next(err);
     }
@@ -80,10 +86,11 @@ export const AuthController = {
 
   refresh: async (req, res, next) => {
     try {
-      validateRefreshRequest(req.body);
-      const dto = toRefreshTokenDto(req.body);
-      const result = await AuthService.refreshTokens(dto);
-      res.status(HTTP_STATUS.OK).json({ success: true, ...result });
+      // req.refreshToken — из httpOnly cookie, см. refreshCookieGuard.
+      const { accessToken, refreshToken, csrfToken } =
+        await AuthService.refreshTokens({ refreshToken: req.refreshToken });
+      CookieProvider.setAuthCookies(res, { refreshToken, csrfToken });
+      res.status(HTTP_STATUS.OK).json({ success: true, accessToken, csrfToken });
     } catch (err) {
       next(err);
     }
@@ -91,9 +98,11 @@ export const AuthController = {
 
   logout: async (req, res, next) => {
     try {
-      const result = await AuthService.logout({
-        refreshToken: req.body.refreshToken,
-      });
+      // Читаем напрямую из cookie (не через guard) — logout должен
+      // оставаться идемпотентным и в отсутствие cookie (сессия уже истекла).
+      const refreshToken = req.cookies?.[COOKIE_NAMES.refreshToken];
+      const result = await AuthService.logout({ refreshToken });
+      CookieProvider.clearAuthCookies(res);
       res.status(HTTP_STATUS.OK).json({ success: true, ...result });
     } catch (err) {
       next(err);

@@ -4,14 +4,17 @@ import { RefreshTokenInvalidException } from "../exceptions/auth.exceptions.js";
 
 export const TokenService = {
   /**
-   * Выпускает новую пару access/refresh токенов и регистрирует
-   * refresh-токен в whitelist (Redis), чтобы его можно было отозвать.
+   * Выпускает новую пару access/refresh токенов + CSRF-токен и
+   * регистрирует refresh-токен в whitelist (Redis), чтобы его можно
+   * было отозвать. CSRF-токен выпускается вместе с парой и ротируется
+   * synchronно с refresh-токеном (см. cookie.provider.js).
    */
   async issueTokenPair(userId) {
     const accessToken = TokenProvider.signAccessToken(userId);
     const { token: refreshToken, jti } = TokenProvider.signRefreshToken(userId);
+    const csrfToken = TokenProvider.generateCsrfToken();
     await TokenRepository.saveRefreshToken(jti, userId);
-    return { accessToken, refreshToken };
+    return { accessToken, refreshToken, csrfToken };
   },
 
   /**

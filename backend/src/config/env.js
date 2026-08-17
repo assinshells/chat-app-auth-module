@@ -49,6 +49,10 @@ export const env = {
   },
   otpTtlSeconds: Number(getEnv("OTP_TTL_SECONDS", 600)),
   otpLength: Number(getEnv("OTP_LENGTH", 6)),
+  // Максимум неверных попыток ввода OTP до его принудительной инвалидации.
+  // Без этого лимита OTP (6 цифр) можно подобрать перебором в пределах TTL,
+  // так как express-rate-limit ограничивает запросы по IP, а не по коду.
+  otpMaxAttempts: Number(getEnv("OTP_MAX_ATTEMPTS", 5)),
   rateLimit: {
     loginMax: Number(getEnv("RATE_LIMIT_LOGIN_MAX", 10)),
     registerMax: Number(getEnv("RATE_LIMIT_REGISTER_MAX", 5)),

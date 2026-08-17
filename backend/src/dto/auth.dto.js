@@ -37,16 +37,14 @@
  */
 
 /**
- * @typedef {Object} RefreshTokenDto
- * @property {string} refreshToken
- */
-
-/**
  * @typedef {Object} AuthResponseDto
  * @property {boolean} success
  * @property {string|undefined} accessToken
- * @property {string|undefined} refreshToken
+ * @property {string|undefined} csrfToken
  * @property {string|undefined} verifiedToken
+ *
+ * Note: refreshToken is intentionally NOT part of the response body —
+ * it's set as an httpOnly cookie by CookieProvider and never exposed to JS.
  */
 
 /**
@@ -80,8 +78,4 @@ export const toResetPasswordDto = (body) => ({
   verifiedToken: body.verifiedToken,
   password: body.password,
   confirmPassword: body.confirmPassword,
-});
-
-export const toRefreshTokenDto = (body) => ({
-  refreshToken: body.refreshToken,
 });

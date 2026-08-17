@@ -54,10 +54,3 @@ export const validateResetPasswordRequest = (body) => {
     errors.push("Passwords do not match");
   if (errors.length) throw new ValidationException("Validation failed", errors);
 };
-
-export const validateRefreshRequest = (body) => {
-  const errors = [];
-  if (!isNonEmptyString(body.refreshToken))
-    errors.push("refreshToken is required");
-  if (errors.length) throw new ValidationException("Validation failed", errors);
-};

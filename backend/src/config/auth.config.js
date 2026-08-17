@@ -21,6 +21,7 @@ export const authConfig = {
   otp: {
     ttlSeconds: env.otpTtlSeconds,
     length: env.otpLength,
+    maxAttempts: env.otpMaxAttempts,
   },
   rateLimit: {
     windowMs: env.rateLimit.windowMs,

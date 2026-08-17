@@ -12,6 +12,16 @@ export const AUTH_ERRORS = Object.freeze({
   RATE_LIMIT_EXCEEDED: "Too many requests, please try again later",
   INTERNAL_ERROR: "Internal server error",
   VALIDATION_FAILED: "Validation failed",
+  CSRF_TOKEN_INVALID: "Invalid or missing CSRF token",
+});
+
+// Cookie names for the httpOnly refresh-token flow. The refresh token
+// itself never touches JS (httpOnly); the CSRF token cookie is
+// intentionally readable by JS — that's what makes the double-submit
+// pattern work (see middlewares/csrf.middleware.js).
+export const COOKIE_NAMES = Object.freeze({
+  refreshToken: "refreshToken",
+  csrfToken: "csrfToken",
 });
 
 // Gender is a required registration field with no default value —
@@ -28,6 +38,7 @@ export const REDIS_KEYS = Object.freeze({
   refreshToken: (jti) => `refresh_token:${jti}`,
   otp: (uid) => `otp:${uid}`,
   otpVerified: (tok) => `otp_verified:${tok}`,
+  otpAttempts: (uid) => `otp_attempts:${uid}`,
 });
 
 export const HTTP_STATUS = Object.freeze({

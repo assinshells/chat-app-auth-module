@@ -34,4 +34,11 @@ export const TokenProvider = {
   verifyRefreshToken(token) {
     return jwt.verify(token, authConfig.jwt.refreshToken.secret);
   },
+
+  // Opaque token for the double-submit CSRF cookie. Not a JWT — it carries
+  // no claims, it only needs to be unguessable and to match the value the
+  // client echoes back in the X-CSRF-Token header.
+  generateCsrfToken() {
+    return crypto.randomBytes(32).toString("hex");
+  },
 };

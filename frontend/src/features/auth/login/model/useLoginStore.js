@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { loginRequest } from "@features/auth/login/api/login.api.js";
-import { TokenStorage } from "@shared/lib/tokenStorage.js";
+import { AuthSession } from "@shared/lib/authSession.js";
 
 export const useLoginStore = create((set) => ({
   loading: false,
@@ -10,7 +10,9 @@ export const useLoginStore = create((set) => ({
     set({ loading: true, error: null });
     try {
       const data = await loginRequest({ login, password });
-      TokenStorage.setTokens(data);
+      // refreshToken/csrfToken пришли как cookie (см. axios.js/backend);
+      // в теле ответа — только accessToken, он живёт в памяти вкладки.
+      AuthSession.setAccessToken(data.accessToken);
       onSuccess();
     } catch (err) {
       set({ error: err.message });

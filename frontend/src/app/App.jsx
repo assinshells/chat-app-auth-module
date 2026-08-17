@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { AUTH_SCREENS } from "@shared/constants/auth.constants.js";
+import { useEffect, useState } from "react";
+import { AUTH_SCREENS, APP_NAME } from "@shared/constants/auth.constants.js";
 import { Storage } from "@shared/lib/storage.js";
-import { TokenStorage } from "@shared/lib/tokenStorage.js";
+import { refreshAccessToken } from "@shared/api/axios.js";
 
 import { LoginPage } from "@pages/LoginPage.jsx";
 import { RegisterPage } from "@pages/RegisterPage.jsx";
@@ -14,12 +14,33 @@ import "@app/styles/index.css";
 
 const USER_KEY = "userLogin";
 
-const getInitialScreen = () =>
-  TokenStorage.hasSession() ? AUTH_SCREENS.APP : AUTH_SCREENS.LOGIN;
-
 export default function App() {
-  const [screen, setScreen] = useState(getInitialScreen);
+  // accessToken живёt только в памяти (AuthSession) и не переживает
+  // перезагрузку страницы — поэтому при монтировании делаем "тихий"
+  // refresh: если у браузера есть валидная httpOnly refreshToken-cookie,
+  // сессия восстановится сама, без повторного логина.
+  const [booting, setBooting] = useState(true);
+  const [screen, setScreen] = useState(AUTH_SCREENS.LOGIN);
   const [screenParams, setScreenParams] = useState({});
+
+  useEffect(() => {
+    let cancelled = false;
+
+    refreshAccessToken()
+      .then(() => {
+        if (!cancelled) setScreen(AUTH_SCREENS.APP);
+      })
+      .catch(() => {
+        // Нет валидной cookie-сессии — остаёмся на экране логина.
+      })
+      .finally(() => {
+        if (!cancelled) setBooting(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const navigate = (newScreen, params = {}) => {
     setScreen(newScreen);
@@ -37,6 +58,17 @@ export default function App() {
   };
 
   const currentLogin = Storage.get(USER_KEY) ?? "anonymous";
+
+  if (booting) {
+    return (
+      <div
+        className="d-flex align-items-center justify-content-center"
+        style={{ minHeight: "100vh" }}
+      >
+        <span className="text-muted">{APP_NAME}…</span>
+      </div>
+    );
+  }
 
   switch (screen) {
     case AUTH_SCREENS.REGISTER:

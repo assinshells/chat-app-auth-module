@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { logoutRequest } from "@features/auth/logout/api/logout.api.js";
-import { TokenStorage } from "@shared/lib/tokenStorage.js";
+import { AuthSession } from "@shared/lib/authSession.js";
 
 export const useLogoutStore = create((set) => ({
   loading: false,
@@ -8,11 +8,11 @@ export const useLogoutStore = create((set) => ({
   logout: async (onSuccess) => {
     set({ loading: true });
     try {
-      await logoutRequest(TokenStorage.getRefreshToken());
+      await logoutRequest();
     } catch {
       // Игнорируем — refresh-токен может быть уже истекшим/отозванным
     } finally {
-      TokenStorage.clearTokens();
+      AuthSession.clear();
       set({ loading: false });
       onSuccess();
     }
