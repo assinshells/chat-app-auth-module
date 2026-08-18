@@ -13,9 +13,13 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ../postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgre} -d ${POSTGRES_DB:-postgre}"]
+      # См. комментарий в docker/dev/compose.yml — на init postgres
+      # перезапускает себя, и одиночная проверка может поймать ложный
+      # "healthy" ещё до реального рестарта. Требуем два ответа подряд.
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgre} -d ${POSTGRES_DB:-postgre} -q && sleep 1 && pg_isready -U ${POSTGRES_USER:-postgre} -d ${POSTGRES_DB:-postgre} -q"]
       interval: 10s
       timeout: 5s
+      start_period: 5s
       retries: 10
     networks:
       - chat-network
@@ -43,7 +47,8 @@ services:
     container_name: chat-backend
     restart: unless-stopped
     env_file:
-      - ../../backend/.env
+      - path: ../../backend/.env
+        required: false
     environment:
       NODE_ENV: production
       PORT: ${BACKEND_PORT:-3000}
